@@ -26,3 +26,12 @@
     -fx-padding: 8;
 }
 
+.Correct {
+    -fx-fill: blue;
+    -fx-font-size: 16;
+}
+
+.Wrong {
+    -fx-fill: red;
+    -fx-font-size: 16;
+}

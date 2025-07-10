@@ -26,3 +26,12 @@
     -fx-font-weight: bold;
 }
 
+.Correct {
+    -fx-fill: white;
+    -fx-font-size: 16;
+}
+
+.Wrong {
+    -fx-fill: darkred;
+    -fx-font-size: 16;
+}

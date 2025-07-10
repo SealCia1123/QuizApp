@@ -6,22 +6,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="600.0" styleClass="Main" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sealcia.quizapp.PracticeController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="600.0" styleClass="Main" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/24" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sealcia.quizapp.PracticeController">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="Subject" text="LUYỆN TẬP" />
       <HBox prefHeight="38.0" prefWidth="580.0" styleClass="Main">
          <children>
-            <TextField />
+            <TextField fx:id="txtNum" />
             <Button mnemonicParsing="false" onAction="#handleStart" text="Bắt đầu" />
          </children>
       </HBox>
-      <Text fx:id="txtContent" strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
+      <Text fx:id="txtContent" strokeType="OUTSIDE" strokeWidth="0.0" text="Hãy nhập số lượng câu hỏi và nhấn bắt đầu" />
       <VBox fx:id="vboxQuestions" prefHeight="353.0" prefWidth="580.0" styleClass="Main" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="..." />
+      <Text fx:id="txtResult" strokeType="OUTSIDE" strokeWidth="0.0" />
       <HBox prefHeight="0.0" prefWidth="580.0" styleClass="Main">
          <children>
-            <Button mnemonicParsing="false" text="Kiem tra" />
-            <Button mnemonicParsing="false" text="&gt;&gt;" />
+            <Button mnemonicParsing="false" onAction="#handleCheck" styleClass="Button" text="Kiểm tra kết quả" />
+            <Button mnemonicParsing="false" onAction="#handleNext" styleClass="Button" text="&gt;&gt;" />
          </children>
       </HBox>
    </children>

@@ -3,9 +3,11 @@ package com.sealcia.quizapp;
 import com.sealcia.pojo.Question;
 import com.sealcia.utils.Configs;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -18,21 +20,49 @@ import java.util.ResourceBundle;
 public class PracticeController implements Initializable {
     @FXML private VBox vboxQuestions;
     @FXML private Text txtContent;
+    @FXML private TextField txtNum;
+    @FXML private Text txtResult;
 
     private List<Question> questions;
     private int currentQuestion;
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) {}
+
+    public void handleStart(ActionEvent event) {
         try {
-            this.questions = Configs.questionService.getQuestions(3);
-            loadQuestion();
+            this.questions =
+                    Configs.questionService.getQuestions(Integer.parseInt(this.txtNum.getText()));
+            this.loadQuestion();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void handleStart() {}
+    public void handleNext(ActionEvent event) {
+        if (this.currentQuestion < this.questions.size() - 1) {
+            this.txtResult.setText("");
+            this.currentQuestion++;
+            this.loadQuestion();
+        }
+    }
+
+    public void handleCheck(ActionEvent event) {
+        Question q = this.questions.get(this.currentQuestion);
+        for (int i = 0; i < q.getChoices().size(); i++) {
+            if (q.getChoices().get(i).isCorrect()) {
+                if (((RadioButton) (this.vboxQuestions.getChildren().get(i))).isSelected()) {
+                    this.txtResult.setText("Chúc mừng bạn đã làm đúng");
+                    this.txtResult.getStyleClass().clear();
+                    this.txtResult.getStyleClass().add("Correct");
+                } else {
+                    this.txtResult.setText("Bạn đã làm sai!!!");
+                    this.txtResult.getStyleClass().clear();
+                    this.txtResult.getStyleClass().add("Wrong");
+                }
+            }
+        }
+    }
 
     private void loadQuestion() {
         Question q = this.questions.get(this.currentQuestion);
