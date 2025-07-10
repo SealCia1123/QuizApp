@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 
 public class PracticeController implements Initializable {
     @FXML private VBox vboxQuestions;
-    @FXML private Text txtQuetionContent;
+    @FXML private Text txtContent;
 
     private List<Question> questions;
     private int currentQuestion;
@@ -26,15 +26,17 @@ public class PracticeController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             this.questions = Configs.questionService.getQuestions(3);
-            this.loadQuestion();
+            loadQuestion();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    public void handleStart() {}
+
     private void loadQuestion() {
         Question q = this.questions.get(this.currentQuestion);
-        this.txtQuetionContent.setText(q.getContent());
+        this.txtContent.setText(q.getContent());
 
         this.vboxQuestions.getChildren().clear();
         ToggleGroup toggleChoices = new ToggleGroup();
