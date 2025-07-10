@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class PracticeController implements Initializable {
-    @FXML private VBox vboxQuestions;
+    @FXML private VBox vboxChoices;
     @FXML private Text txtContent;
     @FXML private TextField txtNum;
     @FXML private Text txtResult;
@@ -31,8 +31,7 @@ public class PracticeController implements Initializable {
 
     public void handleStart(ActionEvent event) {
         try {
-            this.questions =
-                    Configs.questionService.getQuestions(Integer.parseInt(this.txtNum.getText()));
+            this.questions = Configs.questionService.getQuestions(Integer.parseInt(this.txtNum.getText()));
             this.loadQuestion();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,7 +50,8 @@ public class PracticeController implements Initializable {
         Question q = this.questions.get(this.currentQuestion);
         for (int i = 0; i < q.getChoices().size(); i++) {
             if (q.getChoices().get(i).isCorrect()) {
-                if (((RadioButton) (this.vboxQuestions.getChildren().get(i))).isSelected()) {
+                RadioButton rdoBtn = ((RadioButton) (this.vboxChoices.getChildren().get(i)));
+                if (rdoBtn.isSelected()) {
                     this.txtResult.setText("Chúc mừng bạn đã làm đúng");
                     this.txtResult.getStyleClass().clear();
                     this.txtResult.getStyleClass().add("Correct");
@@ -68,12 +68,12 @@ public class PracticeController implements Initializable {
         Question q = this.questions.get(this.currentQuestion);
         this.txtContent.setText(q.getContent());
 
-        this.vboxQuestions.getChildren().clear();
+        this.vboxChoices.getChildren().clear();
         ToggleGroup toggleChoices = new ToggleGroup();
         for (var c : q.getChoices()) {
             RadioButton rdoChoice = new RadioButton(c.getContent());
             rdoChoice.setToggleGroup(toggleChoices);
-            this.vboxQuestions.getChildren().add(rdoChoice);
+            this.vboxChoices.getChildren().add(rdoChoice);
         }
     }
 }
