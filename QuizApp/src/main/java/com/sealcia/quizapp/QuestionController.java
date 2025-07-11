@@ -7,6 +7,7 @@ import com.sealcia.pojo.Question;
 import com.sealcia.services.question.BaseQuestionServices;
 import com.sealcia.services.question.CategoryQuestionServicesDecorator;
 import com.sealcia.services.question.KeywordQuestionServicesDecorator;
+import com.sealcia.services.question.LevelQuestionServicesDecorator;
 import com.sealcia.utils.Configs;
 import com.sealcia.utils.MyAlert;
 
@@ -39,6 +40,7 @@ public class QuestionController implements Initializable {
     @FXML private ComboBox<Category> cbCates;
     @FXML private ComboBox<Category> cbSearchCates;
     @FXML private ComboBox<Level> cbLevels;
+    @FXML private ComboBox<Level> cbSearchLevels;
     @FXML private VBox vboxChoices;
     @FXML private Button addBtn;
     @FXML private TextArea txtContent;
@@ -49,9 +51,10 @@ public class QuestionController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            this.cbCates.setItems(FXCollections.observableList(Configs.categoryServices.getCategories()));
-            this.cbLevels.setItems(FXCollections.observableList(Configs.levelServices.getLevels()));
-            this.cbSearchCates.setItems(FXCollections.observableList(Configs.categoryServices.getCategories()));
+            this.cbCates.setItems(FXCollections.observableList(Configs.categoryServices.list()));
+            this.cbLevels.setItems(FXCollections.observableList(Configs.levelServices.list()));
+            this.cbSearchCates.setItems(FXCollections.observableList(Configs.categoryServices.list()));
+            this.cbSearchLevels.setItems(FXCollections.observableList(Configs.levelServices.list()));
             this.loadColumn();
             this.loadQuestion(Configs.questionServices.list());
         } catch (SQLException e) {
@@ -75,6 +78,17 @@ public class QuestionController implements Initializable {
                                             this.cbSearchCates.getSelectionModel().getSelectedItem());
                 this.loadQuestion(s.list());
             } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        });
+        
+        this.cbSearchLevels.getSelectionModel().selectedItemProperty().addListener(event -> {
+            try {
+                BaseQuestionServices s = new LevelQuestionServicesDecorator(
+                                            Configs.questionServices,
+                                            this.cbSearchLevels.getSelectionModel().getSelectedItem());
+                this.loadQuestion(s.list());
+            } catch(SQLException ex) {
                 ex.printStackTrace();
             }
         });

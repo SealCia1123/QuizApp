@@ -48,7 +48,7 @@ public class QuestionServices extends BaseQuestionServices {
         }
         return questions;
     }
-    */
+    
 
     public List<Question> getQuestions(int num) throws SQLException {
         Connection connection = JdbcConnector.getInstance().connect();
@@ -68,18 +68,7 @@ public class QuestionServices extends BaseQuestionServices {
         }
         return questions;
     }
+    */
 
-    public List<Choice> getChoicesByQuestionId(int id) throws SQLException {
-        Connection connection = JdbcConnector.getInstance().connect();
-
-        PreparedStatement stm = connection.prepareCall("SELECT * FROM choice WHERE question_id=?");
-        stm.setInt(1, id);
-        ResultSet rs = stm.executeQuery();
-
-        List<Choice> choices = new ArrayList<>();
-        while (rs.next()) {
-            choices.add(new Choice(rs.getInt("id"), rs.getString("content"), rs.getBoolean("is_correct")));
-        }
-        return choices;
-    }
+    
 }

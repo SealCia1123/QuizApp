@@ -46,6 +46,7 @@
          <children>
             <TextField fx:id="txtSearch" />
             <ComboBox fx:id="cbSearchCates" prefWidth="150.0" />
+            <ComboBox fx:id="cbSearchLevels" prefWidth="150.0" />
          </children>
       </HBox>
       <TableView fx:id="tbQuestions" prefHeight="200.0" prefWidth="200.0" />

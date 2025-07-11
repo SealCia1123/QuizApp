@@ -1,6 +1,12 @@
 package com.sealcia.quizapp;
 
+import com.sealcia.pojo.Category;
+import com.sealcia.pojo.Level;
 import com.sealcia.pojo.Question;
+import com.sealcia.services.question.BaseQuestionServices;
+import com.sealcia.services.question.CategoryQuestionServicesDecorator;
+import com.sealcia.services.question.LevelQuestionServicesDecorator;
+import com.sealcia.services.question.LimitQuestionServicesDecorator;
 import com.sealcia.utils.Configs;
 
 import javafx.event.ActionEvent;
@@ -16,22 +22,51 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.scene.control.ComboBox;
 
 public class PracticeController implements Initializable {
     @FXML private VBox vboxChoices;
     @FXML private Text txtContent;
     @FXML private TextField txtNum;
     @FXML private Text txtResult;
+    @FXML private ComboBox<Category> cbSearchCates;
+    @FXML private ComboBox<Level> cbSearchLevels;
+
 
     private List<Question> questions;
     private int currentQuestion;
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {}
+    public void initialize(URL url, ResourceBundle rb) {
+        try {
+            this.cbSearchCates.setItems(FXCollections.observableList(Configs.categoryServices.list()));
+            this.cbSearchLevels.setItems(FXCollections.observableList(Configs.levelServices.list()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void handleStart(ActionEvent event) {
         try {
-            this.questions = Configs.questionServices.getQuestions(Integer.parseInt(this.txtNum.getText()));
+            BaseQuestionServices s = Configs.questionServices;
+            
+            Category isCbCateSearchChosen = this.cbSearchCates.getSelectionModel().getSelectedItem();
+            if (isCbCateSearchChosen != null) {
+                s = new CategoryQuestionServicesDecorator(
+                        Configs.questionServices, isCbCateSearchChosen);
+            }
+            
+            Level isCbLevelSearchChosen = this.cbSearchLevels.getSelectionModel().getSelectedItem();
+            
+            if (isCbLevelSearchChosen != null) {
+                s = new LevelQuestionServicesDecorator(Configs.questionServices, isCbLevelSearchChosen);
+            }
+            
+            
+            s = new LimitQuestionServicesDecorator(Configs.questionServices,
+                                        Integer.parseInt(this.txtNum.getText()));
+            this.questions = s.list();
             this.loadQuestion();
         } catch (SQLException e) {
             e.printStackTrace();
