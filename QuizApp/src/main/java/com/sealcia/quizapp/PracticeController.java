@@ -31,7 +31,7 @@ public class PracticeController implements Initializable {
 
     public void handleStart(ActionEvent event) {
         try {
-            this.questions = Configs.questionService.getQuestions(Integer.parseInt(this.txtNum.getText()));
+            this.questions = Configs.questionServices.getQuestions(Integer.parseInt(this.txtNum.getText()));
             this.loadQuestion();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -42,7 +42,12 @@
       </VBox>
       <Button mnemonicParsing="false" onAction="#addChoice" styleClass="Button" text="Thêm lựa chọn" />
       <Button fx:id="addBtn" layoutX="209.0" layoutY="478.0" mnemonicParsing="false" onAction="#addQuestion" styleClass="Button" text="Thêm câu hỏi" />
-      <TextField fx:id="txtSearch" />
+      <HBox styleClass="Main">
+         <children>
+            <TextField fx:id="txtSearch" />
+            <ComboBox fx:id="cbSearchCates" prefWidth="150.0" />
+         </children>
+      </HBox>
       <TableView fx:id="tbQuestions" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </VBox>

@@ -4,6 +4,9 @@ import com.sealcia.pojo.Category;
 import com.sealcia.pojo.Choice;
 import com.sealcia.pojo.Level;
 import com.sealcia.pojo.Question;
+import com.sealcia.services.question.BaseQuestionServices;
+import com.sealcia.services.question.CategoryQuestionServicesDecorator;
+import com.sealcia.services.question.KeywordQuestionServicesDecorator;
 import com.sealcia.utils.Configs;
 import com.sealcia.utils.MyAlert;
 
@@ -34,6 +37,7 @@ import java.util.ResourceBundle;
 
 public class QuestionController implements Initializable {
     @FXML private ComboBox<Category> cbCates;
+    @FXML private ComboBox<Category> cbSearchCates;
     @FXML private ComboBox<Level> cbLevels;
     @FXML private VBox vboxChoices;
     @FXML private Button addBtn;
@@ -47,23 +51,33 @@ public class QuestionController implements Initializable {
         try {
             this.cbCates.setItems(FXCollections.observableList(Configs.categoryServices.getCategories()));
             this.cbLevels.setItems(FXCollections.observableList(Configs.levelServices.getLevels()));
-
+            this.cbSearchCates.setItems(FXCollections.observableList(Configs.categoryServices.getCategories()));
             this.loadColumn();
-            this.loadQuestion(Configs.questionService.getQuestions());
+            this.loadQuestion(Configs.questionServices.list());
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        this.txtSearch
-            .textProperty()
-            .addListener(e -> {
-                try {
-                    this.loadQuestion(
-                        Configs.questionService.getQuestions(this.txtSearch.getText()));
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            });
+        this.txtSearch.textProperty().addListener(event -> {
+            try {
+                BaseQuestionServices s =
+                    new KeywordQuestionServicesDecorator(Configs.questionServices, this.txtSearch.getText());
+                this.loadQuestion(s.list());
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        });
+        
+        this.cbSearchCates.getSelectionModel().selectedItemProperty().addListener(event -> {
+            try {
+                BaseQuestionServices s = new CategoryQuestionServicesDecorator(
+                                            Configs.questionServices,
+                                            this.cbSearchCates.getSelectionModel().getSelectedItem());
+                this.loadQuestion(s.list());
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     public void addChoice(ActionEvent event) {
@@ -93,7 +107,7 @@ public class QuestionController implements Initializable {
                 builder.addChoice(choice);
             }
 
-            Configs.questionService.addQuestion(builder.build());
+            Configs.updateQuestionServices.addQuestion(builder.build());
             this.tbQuestions.getItems().add(0, builder.build());
             MyAlert.getInstance().showMsg("Thêm câu hỏi thành công!");
         } catch (SQLException ex) {
@@ -125,7 +139,7 @@ public class QuestionController implements Initializable {
                         if (t.isPresent() && t.get().equals(ButtonType.OK)) {
                             try {
                                 Question q = (Question) cell.getTableRow().getItem();
-                                Configs.questionService.deleteQuestion(q.getId());
+                                Configs.updateQuestionServices.deleteQuestion(q.getId());
                                 this.tbQuestions.getItems().remove(q);
                                 MyAlert.getInstance().showMsg("Xóa thành công");
                             } catch (SQLException ex) {
