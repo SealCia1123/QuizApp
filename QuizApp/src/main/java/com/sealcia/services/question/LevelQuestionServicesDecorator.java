@@ -1,6 +1,7 @@
 package com.sealcia.services.question;
 
 import com.sealcia.pojo.Level;
+
 import java.util.List;
 
 public class LevelQuestionServicesDecorator extends QuestionDecorator {
@@ -10,7 +11,7 @@ public class LevelQuestionServicesDecorator extends QuestionDecorator {
         super(decorator);
         this.lv = lv;
     }
-    
+
     public LevelQuestionServicesDecorator(BaseQuestionServices decorator, int lvId) {
         super(decorator);
         this.lv = new Level(lvId);

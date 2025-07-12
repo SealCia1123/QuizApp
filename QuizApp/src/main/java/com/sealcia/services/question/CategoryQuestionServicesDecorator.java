@@ -1,6 +1,7 @@
 package com.sealcia.services.question;
 
 import com.sealcia.pojo.Category;
+
 import java.util.List;
 
 public class CategoryQuestionServicesDecorator extends QuestionDecorator {
@@ -22,5 +23,4 @@ public class CategoryQuestionServicesDecorator extends QuestionDecorator {
         params.add(category.getId());
         return sql;
     }
-    
 }

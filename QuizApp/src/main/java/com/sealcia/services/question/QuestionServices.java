@@ -1,14 +1,5 @@
 package com.sealcia.services.question;
 
-import com.sealcia.pojo.Choice;
-import com.sealcia.pojo.Question;
-import com.sealcia.utils.JdbcConnector;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionServices extends BaseQuestionServices {
@@ -17,7 +8,7 @@ public class QuestionServices extends BaseQuestionServices {
     public String getSQL(List<Object> params) {
         return "SELECT * FROM question WHERE 1=1";
     }
-    
+
     /*
     public List<Question> getQuestions() throws SQLException {
         Connection connection = JdbcConnector.getInstance().connect();
@@ -32,7 +23,7 @@ public class QuestionServices extends BaseQuestionServices {
         }
         return questions;
     }
-    
+
 
     public List<Question> getQuestions(String kw) throws SQLException {
         Connection connection = JdbcConnector.getInstance().connect();
@@ -48,7 +39,7 @@ public class QuestionServices extends BaseQuestionServices {
         }
         return questions;
     }
-    
+
 
     public List<Question> getQuestions(int num) throws SQLException {
         Connection connection = JdbcConnector.getInstance().connect();
@@ -69,6 +60,4 @@ public class QuestionServices extends BaseQuestionServices {
         return questions;
     }
     */
-
-    
 }

@@ -4,6 +4,7 @@ import com.sealcia.pojo.Category;
 import com.sealcia.pojo.Choice;
 import com.sealcia.pojo.Level;
 import com.sealcia.pojo.Question;
+import com.sealcia.services.FlyweightFactory;
 import com.sealcia.services.question.BaseQuestionServices;
 import com.sealcia.services.question.CategoryQuestionServicesDecorator;
 import com.sealcia.services.question.KeywordQuestionServicesDecorator;
@@ -51,10 +52,24 @@ public class QuestionController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            this.cbCates.setItems(
+                    FXCollections.observableList(
+                            FlyweightFactory.getData(Configs.categoryServices, "categories")));
+            this.cbLevels.setItems(
+                    FXCollections.observableList(
+                            FlyweightFactory.getData(Configs.levelServices, "levels")));
+            this.cbSearchCates.setItems(
+                    FXCollections.observableList(
+                            FlyweightFactory.getData(Configs.categoryServices, "categories")));
+            this.cbSearchLevels.setItems(
+                    FXCollections.observableList(
+                            FlyweightFactory.getData(Configs.levelServices, "levels")));
+            /*
             this.cbCates.setItems(FXCollections.observableList(Configs.categoryServices.list()));
             this.cbLevels.setItems(FXCollections.observableList(Configs.levelServices.list()));
             this.cbSearchCates.setItems(FXCollections.observableList(Configs.categoryServices.list()));
             this.cbSearchLevels.setItems(FXCollections.observableList(Configs.levelServices.list()));
+            */
             this.loadColumn();
             this.loadQuestion(Configs.questionServices.list());
         } catch (SQLException e) {

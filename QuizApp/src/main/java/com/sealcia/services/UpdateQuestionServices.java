@@ -3,12 +3,13 @@ package com.sealcia.services;
 import com.sealcia.pojo.Choice;
 import com.sealcia.pojo.Question;
 import com.sealcia.utils.JdbcConnector;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UpdateQuestionService {
+public class UpdateQuestionServices {
     public boolean deleteQuestion(int questionId) throws SQLException {
         Connection connection = JdbcConnector.getInstance().connect();
         PreparedStatement stm = connection.prepareCall("DELETE FROM question WHERE id=?");

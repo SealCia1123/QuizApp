@@ -3,20 +3,20 @@ package com.sealcia.services.question;
 import com.sealcia.pojo.Choice;
 import com.sealcia.pojo.Question;
 import com.sealcia.utils.JdbcConnector;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import java.util.List;
 
 public abstract class BaseQuestionServices {
     public abstract String getSQL(List<Object> params);
-    
+
     public List<Question> list() throws SQLException {
         Connection connection = JdbcConnector.getInstance().connect();
-        
+
         // ***********
         List<Object> params = new ArrayList<>();
         PreparedStatement stm = connection.prepareCall(this.getSQL(params));
@@ -24,9 +24,9 @@ public abstract class BaseQuestionServices {
             stm.setObject(i + 1, params.get(i));
         }
         // ***********
-        
+
         ResultSet rs = stm.executeQuery();
-        
+
         List<Question> questions = new ArrayList<>();
         while (rs.next()) {
             Question q = new Question.Builder(rs.getInt("id"), rs.getString("content")).build();
@@ -34,8 +34,7 @@ public abstract class BaseQuestionServices {
         }
         return questions;
     }
-    
-    
+
     public List<Choice> getChoicesByQuestionId(int id) throws SQLException {
         Connection connection = JdbcConnector.getInstance().connect();
 
@@ -45,7 +44,8 @@ public abstract class BaseQuestionServices {
 
         List<Choice> choices = new ArrayList<>();
         while (rs.next()) {
-            choices.add(new Choice(rs.getInt("id"), rs.getString("content"), rs.getBoolean("is_correct")));
+            Choice c = new Choice(rs.getInt("id"), rs.getString("content"), rs.getBoolean("is_correct"));
+            choices.add(c);
         }
         return choices;
     }

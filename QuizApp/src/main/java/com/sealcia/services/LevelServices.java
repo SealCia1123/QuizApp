@@ -1,7 +1,6 @@
 package com.sealcia.services;
 
 import com.sealcia.pojo.Level;
-import com.sealcia.utils.JdbcConnector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LevelServices extends BaseService<Level> {
+public class LevelServices extends BaseServices<Level> {
     @Override
     public PreparedStatement getStatement(Connection conn) throws SQLException {
         return conn.prepareCall("SELECT * FROM level");
