@@ -35,6 +35,7 @@ public class ExamController implements Initializable {
     private List<Question> questions;
     private ExamStrategy s;
     private Map<Integer, Choice> results = new HashMap<>();
+    private static int count;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -51,6 +52,7 @@ public class ExamController implements Initializable {
     }
     
     public void handleStart(ActionEvent event) throws SQLException {
+        count = 0;
         if (this.cbExamTypes.getSelectionModel().getSelectedItem() == ExamType.SPECIFIC) {
             s = new SpecificExamStrategy(Integer.parseInt(this.txtNum.getText()));
         } else {
@@ -96,7 +98,6 @@ public class ExamController implements Initializable {
     
     public void handleFinish(ActionEvent event) {
         if (!results.isEmpty()) {
-            int count = 0;
             for (var c : results.values()) {
                 if (c.isCorrect()) {
                     count++;
@@ -105,6 +106,7 @@ public class ExamController implements Initializable {
             MyAlert.getInstance().showMsg(
                     String.format("Bạn đã làm đúng %d/%d", count, questions.size()),
                     Alert.AlertType.INFORMATION);
+            results.values().clear();
         }
     }
     
