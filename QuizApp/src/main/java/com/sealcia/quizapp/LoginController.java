@@ -1,7 +1,9 @@
 package com.sealcia.quizapp;
 
+import com.sealcia.pojo.User;
 import com.sealcia.utils.Configs;
 import com.sealcia.utils.MyAlert;
+import com.sealcia.utils.SessionManager;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,11 +26,13 @@ public class LoginController implements Initializable {
         String username = this.txtUsername.getText();
         String password = this.txtPassword.getText();
 
-        boolean isLogined = Configs.loginServices.login(username, password);
-        if (isLogined) {
-            MyAlert.getInstance().showMsg("Dang nhap thanh cong", AlertType.INFORMATION);
-        } else {
+        User user = Configs.loginServices.login(username, password);
+        if (user == null) {
             MyAlert.getInstance().showMsg("Username hoac Password khong dung", AlertType.WARNING);
+        } else {
+            MyAlert.getInstance().showMsg("Dang nhap thanh cong", AlertType.INFORMATION);
+            SessionManager.getIntance().setUser(user);
+            Configs.currentUser = user;
         }
     }
 }

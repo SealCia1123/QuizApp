@@ -1,6 +1,7 @@
 package com.sealcia.quizapp;
 
 import com.sealcia.utils.MyStage;
+import com.sealcia.utils.SessionManager;
 import com.sealcia.utils.theme.Theme;
 
 import javafx.collections.FXCollections;
@@ -18,13 +19,18 @@ public class PrimaryController implements Initializable {
     @FXML private ComboBox<Theme> cbThemes;
     @FXML private Text txtGreeting;
 
-    public void handleQuestionManagement(ActionEvent event) throws IOException {
-        MyStage.getInstance().showStage("question.fxml");
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.cbThemes.setItems(FXCollections.observableArrayList(Theme.values()));
+        if (SessionManager.getIntance().getUser() == null) {
+            this.txtGreeting.setText("Xin chào khách");
+        } else {
+            this.txtGreeting.setText("Xin chào ");
+        }
+    }
+
+    public void handleQuestionManagement(ActionEvent event) throws IOException {
+        MyStage.getInstance().showStage("question.fxml");
     }
 
     public void changeTheme(ActionEvent event) {
@@ -37,5 +43,9 @@ public class PrimaryController implements Initializable {
 
     public void handleExam(ActionEvent event) throws IOException {
         MyStage.getInstance().showStage("exam.fxml");
+    }
+
+    public void handleLogin(ActionEvent event) throws IOException {
+        MyStage.getInstance().showStage("login.fxml");
     }
 }

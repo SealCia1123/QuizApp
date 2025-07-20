@@ -1,5 +1,6 @@
 package com.sealcia.utils;
 
+import com.sealcia.pojo.User;
 import com.sealcia.services.CategoryServices;
 import com.sealcia.services.LevelServices;
 import com.sealcia.services.LoginServices;
@@ -17,4 +18,5 @@ public class Configs {
     public static final double[] RATES = {0.4, 0.4, 0.2};
 
     public static final LoginServices loginServices = new LoginServices();
+    public static User currentUser;
 }
